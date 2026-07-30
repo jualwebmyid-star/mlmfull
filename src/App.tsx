@@ -13,7 +13,7 @@ import MemberDashboard from './components/MemberDashboard';
 import ECommerceShop from './components/ECommerceShop';
 import WalletWithdrawal from './components/WalletWithdrawal';
 import FlowchartsAndGuides from './components/FlowchartsAndGuides';
-import { LayoutDashboard, Users, ShoppingBag, Landmark, Settings, Database, Code, BookOpen, UserCheck, ShieldCheck, Mail, Phone, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Users, ShoppingBag, Landmark, Settings, Database, Code, BookOpen, UserCheck, ShieldCheck, Mail, Phone, HelpCircle, Menu, X } from 'lucide-react';
 
 // Seeding Initial Packages
 const INITIAL_PACKAGES: Package[] = [
@@ -65,6 +65,7 @@ const INITIAL_MEMBERS: Member[] = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('landing');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [members, setMembers] = useState<Member[]>(INITIAL_MEMBERS);
   const [bonuses, setBonuses] = useState<MLMBonus[]>(INITIAL_BONUSES);
   const [packages] = useState<Package[]>(INITIAL_PACKAGES);
@@ -271,31 +272,41 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans antialiased text-slate-800">
       
       {/* Dynamic Top-Header */}
-      <header className="bg-slate-900 text-white py-4 px-6 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 z-20">
+      <header className="bg-slate-900 text-white py-3.5 px-4 sm:px-6 border-b border-slate-800 flex justify-between items-center gap-4 z-30 sticky top-0">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-black text-white tracking-tighter text-sm border-2 border-emerald-400">
+          {/* Mobile Hamburger Burger Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700/80 rounded-xl transition-colors cursor-pointer flex items-center justify-center border border-slate-700/60"
+            aria-label="Toggle Navigation Menu"
+            id="mobile-hamburger-btn"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5 text-emerald-400" /> : <Menu className="w-5 h-5 text-emerald-400" />}
+          </button>
+
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-black text-white tracking-tighter text-xs sm:text-sm border-2 border-emerald-400 shrink-0 shadow-sm">
             MLM
           </div>
           <div>
-            <h1 className="font-extrabold text-base tracking-tight leading-none text-white">NexGen MLM Portal</h1>
-            <p className="text-[10px] text-slate-400 font-medium mt-1 uppercase tracking-wider">Laravel 12 / PHP 8.3 / MySQL / React 19</p>
+            <h1 className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-white">NexGen MLM Portal</h1>
+            <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium mt-1 uppercase tracking-wider">Laravel 12 / PHP 8.3 / MySQL / React 19</p>
           </div>
         </div>
 
         {/* Info label about simulator mode */}
-        <div className="bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-1.5 flex items-center space-x-2 text-xs">
+        <div className="hidden sm:flex bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-1.5 items-center space-x-2 text-xs">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span className="text-emerald-400 font-bold text-[11px]">Mode Simulasi Aktif | Double-Entry Audit Ledger</span>
         </div>
       </header>
 
       {/* Main Layout Area */}
-      <div className="flex-1 flex flex-col lg:flex-row">
+      <div className="flex-1 flex flex-col lg:flex-row relative">
         
-        {/* Sidebar Nav */}
-        <nav className="w-full lg:w-64 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 p-4 shrink-0 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1.5 scrollbar-none z-10">
+        {/* Desktop Sidebar Nav (Hidden on Mobile) */}
+        <nav className="hidden lg:flex w-64 bg-slate-900 border-r border-slate-800 p-4 shrink-0 flex-col gap-1.5 z-10">
           
-          <p className="hidden lg:block text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mb-2">
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mb-2">
             Landing & Portal
           </p>
 
@@ -349,7 +360,7 @@ export default function App() {
             <span>Penarikan Dana (WD)</span>
           </button>
 
-          <p className="hidden lg:block text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-4 mb-2">
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-4 mb-2">
             Admin & Database
           </p>
 
@@ -373,7 +384,7 @@ export default function App() {
             <span>Database (80 Tables)</span>
           </button>
 
-          <p className="hidden lg:block text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-4 mb-2">
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-4 mb-2">
             Export & Manuals
           </p>
 
@@ -398,6 +409,144 @@ export default function App() {
           </button>
 
         </nav>
+
+        {/* Mobile Slide-out Drawer Overlay Backdrop */}
+        {mobileMenuOpen && (
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+            id="mobile-drawer-backdrop"
+          />
+        )}
+
+        {/* Mobile Slide-Out Drawer Sidebar Navigation */}
+        <aside
+          className={`fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-slate-900 border-r border-slate-800 p-4 z-50 flex flex-col gap-1.5 shadow-2xl transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
+            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+          id="mobile-drawer-menu"
+        >
+          <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-800">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center font-black text-white text-xs border border-emerald-400">
+                MLM
+              </div>
+              <div>
+                <span className="font-extrabold text-xs text-white block leading-none">Menu Navigasi</span>
+                <span className="text-[10px] text-slate-400 font-medium mt-0.5 block">Pilih Modul Portal</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-1.5 text-slate-400 hover:text-white bg-slate-800 rounded-lg cursor-pointer hover:bg-slate-700"
+              aria-label="Close Mobile Menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mb-1">
+            Landing & Portal
+          </p>
+
+          <button
+            onClick={() => { setActiveTab('landing'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'landing' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Landing Page</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('member'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'member' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <UserCheck className="w-4 h-4" />
+            <span>Member Area (Dashboard)</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('tree'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'tree' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            <span>Genealogy Jaringan (Tree)</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('shop'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'shop' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>E-Commerce Shop</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('wallet'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'wallet' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <Landmark className="w-4 h-4" />
+            <span>Penarikan Dana (WD)</span>
+          </button>
+
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-3 mb-1">
+            Admin & Database
+          </p>
+
+          <button
+            onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'admin' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <Settings className="w-4 h-4" />
+            <span>Admin Panel (Bonus Config)</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('schema'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'schema' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <Database className="w-4 h-4" />
+            <span>Database (80 Tables)</span>
+          </button>
+
+          <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest px-3 mt-3 mb-1">
+            Export & Manuals
+          </p>
+
+          <button
+            onClick={() => { setActiveTab('code'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'code' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <Code className="w-4 h-4" />
+            <span>Laravel Code Exporter</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('manual'); setMobileMenuOpen(false); }}
+            className={`flex items-center space-x-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'manual' ? 'bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Dokumentasi & UML</span>
+          </button>
+        </aside>
 
         {/* Content Panel Viewport */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
