@@ -1,0 +1,6 @@
+{
+  "name": "MLM Platform Laravel 12 & Live Simulator",
+  "description": "A professional Multi-Level Marketing (MLM) platform simulator, architecture explorer, and comprehensive Laravel 12 & MySQL clean-code repository generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
